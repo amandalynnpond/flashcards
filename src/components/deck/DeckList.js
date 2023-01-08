@@ -19,7 +19,7 @@ function DeckList(){
     }
 
     const deckList = decks.map((deck) => <Deck key={deck.id} deck={deck} />)
-    console.log(listDecks())
+    //console.log(listDecks())
 
     return (
         <div>

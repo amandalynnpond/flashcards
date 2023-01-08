@@ -79,7 +79,7 @@ function CreateNewCard(){
                         />
                     </label>
                 </div>
-                <button type="submit" className="btn btn-info">Submit</button>
+                <button type="submit" className="btn btn-info">Save</button>
                 <Link to={`/decks/${deck.id}`}>
                     <button type="button" className="btn btn-secondary ml-2">
                         Done

@@ -1,6 +1,8 @@
 import React, {useState, useEffect} from "react";
 import { Link, useParams, useRouteMatch } from "react-router-dom";
 import { readDeck } from "../../utils/api";
+import NotEnoughCards from "./NotEnoughCards";
+import FlashcardStudy from "./FlashcardStudy"
 
 function Study(){
     const [deck, setDeck] = useState([])
@@ -17,6 +19,17 @@ function Study(){
 
 
     const cards = deck.cards
+    let result = ""
+
+    if (cards) {
+        if (cards.length < 3) {
+        result = <NotEnoughCards cards={cards} deck={deck} />
+        } else {
+            result = <FlashcardStudy />
+        }
+    } else {
+        result = <p>Loading...</p>
+    }
 
             return (
                 <div>
@@ -27,21 +40,7 @@ function Study(){
                             <li className="breadcrumb-item active" aria-current="page">Study</li>
                         </ol>
                     </nav>
-                    {cards ? (
-                    <div>
-                    <h2>Study {deck.name}</h2>
-                    <h3>Not enough cards</h3>
-                    You must have at least three cards to study. Currently you have {cards.length} cards.
-                    <br />
-                    <Link to={`/decks/${deck.id}/cards/new`}>
-                        <button type="button" className="btn btn-info mt-4">Add Card</button>
-                    </Link>
-                </div>
-                    ) : (
-                        <div className="p-4 border border-top-0">
-                        <p>Loading...</p>
-                      </div>
-                    )}
+                    {result}
                 </div>
             )
     }

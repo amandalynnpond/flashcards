@@ -7,7 +7,7 @@ function Deck({deck}){
     const history = useHistory()
 
     const handleDelete = () => {
-        const result = window.confirm("Are you use you want to delete this deck?")
+        const result = window.confirm(`Are you use you want to delete the deck: ${deck.name}?`)
         if (result) {
             deleteDeck(deck.id).then(() => {
                 history.go(0)

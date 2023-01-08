@@ -1,9 +1,8 @@
 import React, {useState, useEffect} from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams, useRouteMatch } from "react-router-dom";
 import { readDeck } from "../../utils/api";
-import Card from "./Card"
 
-function CardList(){
+function FlashcardStudy(){
     const [deck, setDeck] = useState([])
     const [error, setError] = useState(undefined)
     const {deckId} = useParams()
@@ -16,20 +15,13 @@ function CardList(){
         return () => abortController.abort()
     }, [deckId])
 
-    const cards = deck.cards
-    let cardList = ""
-
-    if (cards) {
-        cardList = cards.map((card) => <Card key={card.id} card={card} />)
-    } else {
-        cardList = "Loading..."
-    }
+    console.log(deck.cards)
 
     return (
         <div>
-            {cardList}
+            Study study with my buddy.
         </div>
     )
 }
 
-export default CardList
+export default FlashcardStudy
