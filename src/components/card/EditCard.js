@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useParams, useRouteMatch, Link, useHistory } from "react-router-dom/";
+import { useParams, Link, useHistory } from "react-router-dom/";
 import { readCard, readDeck, updateCard } from "../../utils/api";
 
 function EditCard(){
@@ -8,7 +8,7 @@ function EditCard(){
     const [error, setError] = useState(undefined)
     const {deckId} = useParams()
     const {cardId} = useParams()
-    const {url} = useRouteMatch()
+    const {updateCard} = useParams()
     const history = useHistory()
 
     useEffect(() => {
@@ -56,7 +56,7 @@ function EditCard(){
         <nav aria-label="breadcrumb">
             <ol className="breadcrumb">
                 <li className="breadcrumb-item"><Link to="/">Home</Link></li>
-                <li className="breadcrumb-item active"><Link to={`/decks/`}>{deck.name}</Link></li>
+                <li className="breadcrumb-item"><Link to={`/decks/${deck.id}`}>{deck.name}</Link></li>
                 <li className="breadcrumb-item active" aria-current="page">Edit Card {card.id}</li>
             </ol>
         </nav>
@@ -91,7 +91,7 @@ function EditCard(){
                 </label>
             </div>
             <button type="submit" className="btn btn-info">Save</button>
-                <Link to={url}>
+                <Link to={`/decks/${deck.id}`}>
                     <button type="button" className="btn btn-secondary ml-2">
                         Cancel
                     </button>

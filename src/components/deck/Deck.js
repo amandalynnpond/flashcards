@@ -17,6 +17,12 @@ function Deck({deck}){
     
     return (
         <article>
+            <nav aria-label="breadcrumb">
+                <ol className="breadcrumb">
+                    <li className="breadcrumb-item"><Link to="/">Home</Link></li>
+                    <li className="breadcrumb-item active" aria-current="page">{deck.name}</li>
+                </ol>
+            </nav>
             <div className="border p-4 h-100 d-flex flex-column m-5">
                 <div className="d-flex justify-content-between">
                     <h4>

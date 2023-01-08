@@ -8,6 +8,7 @@ import Header from "./Header";
 import NotFound from "./NotFound";
 import ViewDeck from "../components/deck/ViewDeck";
 import EditCard from "../components/card/EditCard";
+import EditDeck from "../components/deck/EditDeck";
 
 function Layout() {
 
@@ -33,6 +34,9 @@ function Layout() {
           </Route>
           <Route path="/decks/:deckId/cards/:cardId/edit">
             <EditCard />
+          </Route>
+          <Route path="/decks/:deckId/edit">
+            <EditDeck />
           </Route>
           <Route>
             <NotFound />
