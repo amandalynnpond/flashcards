@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link, useHistory, useParams } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import { createDeck } from "../../utils/api";
 
 function CreateNewDeck(){
@@ -21,9 +21,9 @@ function CreateNewDeck(){
 
     const history = useHistory()
 
-    const handleSubmit = (event) => {
+    const handleSubmit = async (event) => {
         event.preventDefault()
-        createDeck(formData)
+        await createDeck(formData)
         history.push("/")
     }
 
@@ -39,7 +39,7 @@ function CreateNewDeck(){
             <h2>Create Deck</h2>
             <form name="create" onSubmit={handleSubmit}>
                 <div className="form-group">
-                    <label htmlFor="name">
+                    <label htmlFor="name" style={{"width": "90%"}}>
                         Name
                         <input
                             id="name"
@@ -53,7 +53,7 @@ function CreateNewDeck(){
                     </label>
                 </div>
                 <div className="form-group">
-                    <label htmlFor="description">
+                    <label htmlFor="description" style={{"width": "90%"}}>
                         Description
                         <textarea
                             id="description"

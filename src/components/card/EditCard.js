@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams, Link, useHistory } from "react-router-dom/";
 import { readCard, readDeck, updateCard } from "../../utils/api";
+import CardForm from "./CardForm";
 
 function EditCard(){
     const [deck, setDeck] = useState([])
@@ -8,7 +9,6 @@ function EditCard(){
     const [error, setError] = useState(undefined)
     const {deckId} = useParams()
     const {cardId} = useParams()
-    const {updateCard} = useParams()
     const history = useHistory()
 
     useEffect(() => {
@@ -27,29 +27,19 @@ function EditCard(){
         return() => abortController.abort()
     }, [cardId])
 
-    const initialFormState = {
-        front: "cardFront",
-        back: "cardBack",
-    }
-
-    const [formData, setFormData] = useState({...initialFormState})
-
     const handleChange = ({target}) => {
         const value = target.value
-        setFormData({
-            ...formData,
+        setCard({
+            ...card,
             [target.name]: value
         })
     }
 
-    //FIX THIS
-    const handleSubmit = (event) => {
+    const handleSubmit = async (event) => {
         event.preventDefault()
-        updateCard(formData)
-        history.goBack()
+        await updateCard(card)
+        history.push(`/decks/${deck.id}`)
     }
-
-
 
     return(
         <div>
@@ -60,43 +50,14 @@ function EditCard(){
                 <li className="breadcrumb-item active" aria-current="page">Edit Card {card.id}</li>
             </ol>
         </nav>
-        <h2>{deck.name}: Edit Card {card.id}</h2>
-        <form name="create" onSubmit={handleSubmit} className="d-flex-column align-items-stretch">
-            <div className="form-group">
-                <label htmlFor="name">
-                    Name
-                    <textarea
-                        id="front"
-                        type="text"
-                        name="front"
-                        rows="5"
-                        className="form-control p-2"
-                        onChange={handleChange}
-                        value={formData.front}
-                    />
-                </label>
-            </div>
-            <div className="form-group">
-                <label htmlFor="description">
-                    Description
-                    <textarea
-                        id="back"
-                        type="text"
-                        name="back"
-                        rows="5"
-                        className="form-control p-2 align"
-                        onChange={handleChange}
-                        value={formData.back}
-                    />
-                </label>
-            </div>
-            <button type="submit" className="btn btn-info">Save</button>
-                <Link to={`/decks/${deck.id}`}>
-                    <button type="button" className="btn btn-secondary ml-2">
-                        Cancel
-                    </button>
-                </Link>
-            </form>
+        {card.id ? (
+            <div>
+                <h2>{deck.name}: Edit Card {card.id}</h2>
+                <CardForm handleSubmit={handleSubmit} handleChange={handleChange} card={card} deck={deck} />
+                </div>
+        ) : (
+            <p>Loading...</p>
+        )}
         </div>
     )
 }

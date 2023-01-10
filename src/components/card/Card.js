@@ -1,13 +1,13 @@
 import React from "react";
-import { Link, useHistory, useParams, useRouteMatch } from "react-router-dom";
-import { deleteCard, updateCard } from "../../utils/api";
+import { Link, useHistory, useRouteMatch } from "react-router-dom";
+import { deleteCard } from "../../utils/api";
 
 function Card({card}){
     const history = useHistory()
     const {url} = useRouteMatch()
 
     const handleDelete = () => {
-        const result = window.confirm(`Are you use you want to delete this card?`)
+        const result = window.confirm(`Are you use you want to delete this card? \n \n You will not be able to recover it.`)
         if (result) {
             deleteCard(card.id).then(() => {
                 history.go(0)

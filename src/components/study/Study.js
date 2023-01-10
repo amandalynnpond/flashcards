@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from "react";
-import { Link, useParams, useRouteMatch } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { readDeck } from "../../utils/api";
 import NotEnoughCards from "./NotEnoughCards";
 import FlashcardStudy from "./FlashcardStudy"
@@ -25,7 +25,7 @@ function Study(){
         if (cards.length < 3) {
         result = <NotEnoughCards cards={cards} deck={deck} />
         } else {
-            result = <FlashcardStudy />
+            result = <FlashcardStudy cards={cards} deck={deck} />
         }
     } else {
         result = <p>Loading...</p>

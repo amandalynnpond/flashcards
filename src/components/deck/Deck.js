@@ -1,5 +1,5 @@
 import React from "react";
-import { Link, useHistory, useParams } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import { deleteDeck } from "../../utils/api";
 
 function Deck({deck}){
@@ -7,22 +7,15 @@ function Deck({deck}){
     const history = useHistory()
 
     const handleDelete = () => {
-        const result = window.confirm(`Are you use you want to delete the deck: ${deck.name}?`)
+        const result = window.confirm(`Are you use you want to delete the deck: ${deck.name}? \n \n You will not be able to recover it.`)
         if (result) {
-            deleteDeck(deck.id).then(() => {
-                history.go(0)
-            })
+            deleteDeck(deck.id)
+            .then(history.go(0))
         }
     }
     
     return (
         <article>
-            <nav aria-label="breadcrumb">
-                <ol className="breadcrumb">
-                    <li className="breadcrumb-item"><Link to="/">Home</Link></li>
-                    <li className="breadcrumb-item active" aria-current="page">{deck.name}</li>
-                </ol>
-            </nav>
             <div className="border p-4 h-100 d-flex flex-column m-5">
                 <div className="d-flex justify-content-between">
                     <h4>

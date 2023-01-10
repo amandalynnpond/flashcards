@@ -1,11 +1,12 @@
 import React, {useEffect, useState} from "react";
-import { Link, useParams } from "react-router-dom";
-import { readDeck } from "../../utils/api";
+import { Link, useHistory, useParams } from "react-router-dom";
+import { readDeck, updateDeck } from "../../utils/api";
 
 function EditDeck(){
     const [deck, setDeck] = useState([])
     const [error, setError] = useState(undefined)
     const {deckId} = useParams()
+    const history = useHistory()
 
     useEffect(() => {
         const abortController = new AbortController()
@@ -15,23 +16,19 @@ function EditDeck(){
         return () => abortController.abort()
     }, [deckId])
 
-    const initialFormState = {
-        name: "",
-        description: "",
-    }
-
-    const [formData, setFormData] = useState({...initialFormState})
 
     const handleChange = ({target}) => {
         const value = target.value
-        setFormData({
-            ...formData,
+        setDeck({
+            ...deck,
             [target.name]: value
         })
     }
 
-    const handleSubmit = (event) => {
-        console.log("Submitted!")
+    const handleSubmit = async (event) => {
+        event.preventDefault()
+        await updateDeck(deck)
+        history.push(`/decks/${deck.id}`)
     }
 
     return (
@@ -39,48 +36,52 @@ function EditDeck(){
             <nav aria-label="breadcrumb">
                 <ol className="breadcrumb">
                     <li className="breadcrumb-item"><Link to="/">Home</Link></li>
-                    <li className="breadcrumb-item"><Link to={`/deck/${deck.id}`}>{deck.name}</Link></li>
+                    <li className="breadcrumb-item"><Link to={`/decks/${deck.id}`}>{deck.name}</Link></li>
                     <li className="breadcrumb-item active" aria-current="page">Edit Deck</li>
                 </ol>
             </nav>
-            <h2>Edit Deck</h2>
-            <form name="create" onSubmit={handleSubmit}>
-                <div className="form-group">
-                    <label htmlFor="name">
-                        Name
-                        <input
-                            id="name"
-                            type="text"
-                            name="name"
-                            placeholder="Deck Name"
-                            className="form-control"
-                            onChange={handleChange}
-                            value={formData.name}
-                        />
-                    </label>
+            {deck.id ? (
+                <div>
+                    <h2>{deck.name}: Edit Deck</h2>
+                    <form name="create" onSubmit={handleSubmit}>
+                        <div className="form-group">
+                            <label htmlFor="name" style={{"width": "90%"}}>
+                                Name
+                                <input
+                                    id="name"
+                                    type="text"
+                                    name="name"
+                                    className="form-control"
+                                    onChange={handleChange}
+                                    value={deck.name}
+                                />
+                            </label>
+                        </div>
+                        <div className="form-group">
+                            <label htmlFor="description" style={{"width": "90%"}}>
+                                Description
+                                <textarea
+                                    id="description"
+                                    type="text"
+                                    name="description"
+                                    rows="5"
+                                    className="form-control"
+                                    onChange={handleChange}
+                                    value={deck.description}
+                                />
+                            </label>
+                        </div>
+                        <button type="submit" className="btn btn-info">Save</button>
+                        <Link to={`/decks/${deck.id}`}>
+                            <button type="button" className="btn btn-secondary ml-2">
+                                Cancel
+                            </button>
+                        </Link>
+                    </form>
                 </div>
-                <div className="form-group">
-                    <label htmlFor="description">
-                        Description
-                        <textarea
-                            id="description"
-                            type="text"
-                            name="description"
-                            placeholder="Write a brief description here."
-                            rows="5"
-                            className="form-control"
-                            onChange={handleChange}
-                            value={formData.description}
-                        />
-                    </label>
-                </div>
-                <button type="submit" className="btn btn-info">Save</button>
-                <Link to={`/decks/${deck.id}`}>
-                    <button type="button" className="btn btn-secondary ml-2">
-                        Cancel
-                    </button>
-                </Link>
-            </form>
+            ) : (
+                <p>Loading...</p>
+            )}
         </div>
     )
 }
